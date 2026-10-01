@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ur" xml:lang="ur">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Mizanora Setup Guide ��� WhatsApp &amp; Telegram AI Agent</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" href="data:," />
+<meta name="description" content="Mizanora setup guide: API keys kahan se lein, Firebase, GitHub, Vercel, WhatsApp, Telegram aur 24/7 deploy."><link rel="canonical" href="https://mizanoraagent.vercel.app/guide"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/icon-192.png"><style>body{background:#0a0805;color:#fbf3de;font:16px/1.7 system-ui,sans-serif;max-width:760px;margin:auto;padding:20px}a{color:#f5b82e}table{border-collapse:collapse;display:block;overflow-x:auto}td,th{border:1px solid #ffffff22;padding:6px 10px}code{background:#1d1709;padding:1px 5px;border-radius:5px}h1,h2{color:#f5b82e}</style></head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Mizanora Setup Guide ��� WhatsApp &amp; Telegram AI
+Agent</h1>
+</header>
+<h1 id="mizanora-v3--setup-guide-keys-kahan-se-lein">Mizanora v3 — Setup
+Guide (keys kahan se lein)</h1>
+<p>Developer: Muaaz Iqbal. Sab links official sites ke hain;
+plans/limits badalte rehte hain, signup par dekh lein.</p>
+<h2 id="1-zaroori-minimum">1. Zaroori (minimum)</h2>
+<table>
+<thead>
+<tr class="header">
+<th>Cheez</th>
+<th>Kahan se</th>
+<th>Kaam</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gemini key</td>
+<td>aistudio.google.com → Get API key</td>
+<td>chat, vision, STT, expressive voice (free tier)</td>
+</tr>
+<tr class="even">
+<td>Firebase project</td>
+<td>console.firebase.google.com</td>
+<td>login (Google), Firestore, service-account JSON</td>
+</tr>
+<tr class="odd">
+<td>GitHub private repo + token</td>
+<td>github.com → Settings → Developer settings → Fine-grained token
+(Contents, Actions, Workflows: Read/Write)</td>
+<td>workflows chalana</td>
+</tr>
+<tr class="even">
+<td>Vercel account</td>
+<td>vercel.com → Import repo</td>
+<td>web app + webhook</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-optional-behtar-quality">2. Optional (behtar quality)</h2>
+<p>Groq (console.groq.com, tez + Whisper), OpenRouter (openrouter.ai),
+Mistral (console.mistral.ai), DeepSeek (platform.deepseek.com), Tavily
+(tavily.com, search), Brave Search API, Serper (serper.dev), HuggingFace
+token (huggingface.co/settings/tokens, images).</p>
+<h2 id="3-channels">3. Channels</h2>
+<ul>
+<li><strong>WhatsApp Agent:</strong> WhatsApp → Settings → Agents →
+Create → chat info → API key → <code>WHATSAPP_AGENT_API_KEY</code>.</li>
+<li><strong>Telegram:</strong> Telegram mein @BotFather → /newbot →
+token → <code>TELEGRAM_BOT_TOKEN</code>.</li>
+<li><strong>WhatsApp Business:</strong> developers.facebook.com → My
+Apps → Business → WhatsApp → API Setup (Phone number ID, permanent token
+via System User) → App Settings → Basic → App Secret (ZAROORI v3 mein).
+Webhook URL aur verify token web app ke Business tab mein milte hain;
+subscribe: <code>messages</code>.</li>
+</ul>
+<h2 id="4-deploy-tarteeb">4. Deploy (tarteeb)</h2>
+<ol type="1">
+<li>Firebase: Authentication → Google ON; Firestore banayein;
+<code>firestore.rules</code> mein admin email badal kar Publish. Pehli
+baar <code>pub/settings</code> doc (autoApprove=true) Admin tab se Save
+karein.</li>
+<li>Bot repo (Mizanora-v3-core) private GitHub par; secret
+<code>FIREBASE_SERVICE_ACCOUNT</code> (Firebase → Project settings →
+Service accounts → Generate key).</li>
+<li>Web zip Vercel par; Firebase Authorized domains mein Vercel
+domain.</li>
+<li>Actions → <strong>3 - Mizanora Agents (auto)</strong> → Run workflow
+(ek baar). Iske baad cron har 30 min khud chalta hai.</li>
+<li>User: Agent tab mein keys + channel, Home → <strong>Agent start
+karein</strong>. Admin ki manzoori nahi chahiye; 30 min ke andar agent
+live.</li>
+</ol>
+<h2 id="5-control">5. Control</h2>
+<p>User: Home → Stop / Run, Settings tab (naam, timezone, voice, gaane
+ki hadd). Admin: auto-approve ON/OFF, sab agents pause, max agents,
+Suspend/Unsuspend. Auto-approve OFF ho to user "pending" rehta hai aur
+admin Approve dabata hai.</p>
+<h2 id="6-247-aur-restart">6. 24/7 aur restart</h2>
+<p>Workflow har 30 min cron par, 340 min ka shift, concurrency se
+overlap nahi. Free GitHub minutes kam hain; serious 24/7 ke liye VPS:
+<code>npm i &amp;&amp; npm start</code> (pm2/systemd se
+auto-restart).</p>
+<h2 id="7-naye-tools">7. Naye tools</h2>
+<p><code>compose_music</code> (instrumental MP3, synth-style, vocals
+nahi), owner ke liye <code>run_shell</code>, <code>run_python</code>,
+<code>browser_task</code>, <code>write_file</code>,
+<code>zip_and_send</code>. Lambi coding: "project banao aur zip
+bhejo".</p>
+<h2 id="8-seo-google-par-upar-aane-ke-liye">8. SEO (Google par upar aane
+ke liye)</h2>
+<p>Domain khareedein, Search Console mein verify + sitemap, har page ka
+unique title/description, logo ka alt text, kaam ke Urdu/English
+articles ("WhatsApp AI agent kaise banayein"), tez loading, backlinks.
+Top ranking ki guarantee koi nahi de sakta.</p>
+<h2 id="9-security">9. Security</h2>
+<p>Keys kabhi chat/repo mein na dein. <code>appSecret</code> ke baghair
+business webhook ab reject hota hai. Owner tools poori machine par code
+chalate hain.</p>
+<h2 id="10-hosted-agents-ki-safety">10. Hosted agents ki safety</h2>
+<p>Multi-user mode mein <code>run_shell</code>/<code>run_python</code>
+band hain (warna user runner ke secrets parh sakta tha). Sirf aap ka
+apna bot (workflow 2) host-shell rakhta hai.</p>
+</body>
+</html>

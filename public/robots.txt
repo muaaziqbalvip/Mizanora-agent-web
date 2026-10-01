@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mizanoraagent.vercel.app/sitemap.xml
