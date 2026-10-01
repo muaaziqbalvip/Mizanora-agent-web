@@ -29,9 +29,14 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg poppler-utils && pip install --user --break-system-packages -q edge-tts && echo "$HOME/.local/bin" >> $GITHUB_PATH
       - run: npm install --no-audit --no-fund
       - run: node scripts/load-config.js ${uid} >> $GITHUB_ENV
-        env: { FIREBASE_SERVICE_ACCOUNT: \${{ secrets.FIREBASE_SERVICE_ACCOUNT }} }
+        env:
+          FIREBASE_SERVICE_ACCOUNT: "\${{ secrets.FIREBASE_SERVICE_ACCOUNT }}\"
       - run: MAX_RUNTIME_MIN=340 node src/index.js
-        env: { FIREBASE_SERVICE_ACCOUNT: \${{ secrets.FIREBASE_SERVICE_ACCOUNT }}, AGENT_UID: ${uid}, CHANNEL: ${ch}, MEMORY_DIR: memory_store/${uid}-${ch} }
+        env:
+          FIREBASE_SERVICE_ACCOUNT: "\${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+          AGENT_UID: "${uid}"
+          CHANNEL: "${ch}"
+          MEMORY_DIR: "memory_store/${uid}-${ch}\"
 `;
 const gh=async(c,p,o={})=>{const r=await fetch('https://api.github.com/repos/'+c.repo+p,{...o,headers:{Authorization:'Bearer '+c.token,Accept:'application/vnd.github+json'}});return r};
 async function cfg(){return (await getDoc(doc(db,'admin/config'))).data()||{}}
