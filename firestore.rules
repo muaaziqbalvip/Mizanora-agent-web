@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
-    function admin() { return request.auth != null && request.auth.token.email in ['PUT_YOUR_ADMIN_EMAIL_HERE']; }
+    function admin() { return request.auth != null && request.auth.token.email in ['mezanora.market@gmail.com']; }
     function me(u) { return request.auth != null && request.auth.uid == u; }
     function auto() { return get(/databases/$(db)/documents/pub/settings).data.get('autoApprove', true) == true; }
     match /users/{u} {
