@@ -1,5 +1,7 @@
-# Mizanora Web (Vercel)
-1. Firebase: Authentication → Google ON, Authorized domains mein `mizanoraagent.vercel.app` add. Firestore create karein, Rules: `allow read, write: if false;` (sab kuch server se hota hai).
-2. GitHub: private repo `owner/mizanora-bots` mein Mizanora-v2 ka code push (branch `main`). Fine-grained token: Contents RW + Actions RW us repo par.
-3. Vercel env: FIREBASE_SERVICE_ACCOUNT (service-account JSON), ENC_KEY (`openssl rand -hex 32`), GITHUB_TOKEN, GITHUB_REPO, ADMIN_EMAILS, APP_URL (https://mizanoraagent.vercel.app).
-4. Deploy: `vercel --prod`.
+# Mizanora Web — Vercel par KOI env variable nahi
+Sab secrets sirf **GitHub** mein. Vercel sirf static page + chhota webhook relay host karta hai.
+1. Firebase: Authentication → Google ON + Authorized domain (`mizanoraagent.vercel.app`). Firestore banayein, `firestore.rules` paste karein (apni admin email daal kar) → Publish.
+2. Bot repo (private, Mizanora-v2 code, branch `main`) → Settings → Secrets → Actions: **FIREBASE_SERVICE_ACCOUNT** = service-account JSON (Firebase → Project settings → Service accounts → Generate key). Bas yehi ek secret.
+3. Is web app ko Vercel par import karein (Framework: Other). Env variables: **koi nahi**.
+4. App kholen, admin email se login → Admin → Settings mein GitHub token (Contents+Actions+Workflows RW) aur `owner/repo` save karein.
+5. User: keys bharein → Deploy request → Admin Approve → workflow ban kar chal padta hai.
